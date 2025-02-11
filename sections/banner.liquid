@@ -1,0 +1,188 @@
+{{ 'banner.css' | asset_url | stylesheet_tag }}
+
+  <div class="custom-banner">
+  <!-- Top Section -->
+  <div class="custom-banner__top">
+    <div class="custom-banner__top-left">
+      <p>
+        {{ section.settings.store_name }}
+
+      </p>
+    </div>
+    <div class="custom-banner__top-middle">
+      {{ section.settings.top_message }}
+    </div>
+    <div class="custom-banner__top-right">
+      <a href="{{ section.settings.top_button_link }}" class="button">
+        {{ section.settings.top_button_label }}
+      </a>
+    </div>
+  </div>
+
+  <!-- Middle Section -->
+  <div class="custom-banner__middle">
+    <div class="custom-banner__middle-top">
+      {% if section.settings.background_image != blank %}
+        <img
+          src="{{ section.settings.background_image | img_url: '2000x' }}"
+          alt="{{ section.settings.background_image.alt }}"
+          loading="lazy">
+      {% endif %}
+    </div>
+    <div class="custom-banner__middle-bottom">
+      <div class="custom-banner__middle-bottom-left">
+        <div class="text-box1">
+          {{ section.settings.bottom_text_box_1 }}
+        </div>
+        <div class="text-box2">
+          {{ section.settings.bottom_text_box_2 }}
+        </div>
+        <div class="button2-container">
+          <a href="{{ section.settings.bottom_button_link }}" class="button2">
+            {{ section.settings.bottom_button_label }}
+          </a>
+        </div>
+      </div>
+      <div class="custom-banner__middle-bottom-right">
+        {% if section.settings.background_image2 != blank %}
+          <img
+            src="{{ section.settings.background_image2 | img_url: '2000x' }}"
+            alt="{{ section.settings.background_image2.alt }}"
+            loading="lazy">
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Section -->
+  <div class="custom-banner__bottom">
+    {{ section.settings.bottom_text }}
+  </div>
+</div>
+
+<div class="custom-banner-mobile">
+  <div class="custom-banner__top-mobile">
+    <div class="burger-icon" onclick="toggleMenu()">
+      <span class="line1"></span>
+      <span class="line2"></span>
+      <span class="line3"></span>
+    </div>
+    <div class="top-header">
+      <p>
+        {{ section.settings.store_name }}
+      </p>
+    </div>
+  </div>
+
+  <div class="mobile-menu">
+    <div class="custom-banner__top-middle-mobile">
+      {{ section.settings.top_message }}
+    </div>
+    <div class="custom-banner__top-right-mobile">
+      <a href="{{ section.settings.top_button_link }}" class="button">
+        {{ section.settings.top_button_label }}
+      </a>
+    </div>
+  </div>
+
+  <div class="custom-banner__middle-mobile">
+    <div class="text-box1-mobile">
+      {{ section.settings.bottom_text_box_1 }}
+    </div>
+    <div class="text-box2-mobile">
+      {{ section.settings.bottom_text_box_2 }}
+    </div>
+    <img
+      class="custom-banner__middle-mobile-image"
+      src="{{ section.settings.background_image | img_url: 'master' }}"
+      alt=""
+      loading="lazy">
+
+    <div class="button2-container-mobile">
+      <a href="{{ section.settings.bottom_button_link }}" class="button2-mobile">
+        {{ section.settings.bottom_button_label }}
+      </a>
+    </div>
+  </div>
+
+  <div class="custom-banner__bottom-mobile">
+    {{ section.settings.bottom_text }}
+  </div>
+
+</div>
+
+<script>
+  function toggleMenu() {
+    document.querySelector(".mobile-menu").classList.toggle("active");
+    document.querySelector(".burger-icon").classList.toggle("active");
+  }
+</script>
+
+{% schema %}
+  {
+    "name": "Custom Banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "store_name",
+        "label": "Store Name",
+        "default": "My Store"
+      },
+      {
+        "type": "text",
+        "id": "top_message",
+        "label": "Top Message",
+        "default": "Welcome to our store!"
+      },
+      {
+        "type": "text",
+        "id": "top_button_label",
+        "label": "Top Button Label",
+        "default": "Shop Now"
+      },
+      {
+        "type": "url",
+        "id": "top_button_link",
+        "label": "Top Button Link"
+      }, {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background Image"
+      }, {
+        "type": "image_picker",
+        "id": "background_image2",
+        "label": "Background Image2"
+      }, {
+        "type": "text",
+        "id": "bottom_text_box_1",
+        "label": "Bottom Text Box 1",
+        "default": "Text Box 1"
+      }, {
+        "type": "text",
+        "id": "bottom_text_box_2",
+        "label": "Bottom Text Box 2",
+        "default": "Text Box 2"
+      }, {
+        "type": "text",
+        "id": "bottom_button_label",
+        "label": "Bottom Button Label",
+        "default": "Learn More"
+      }, {
+        "type": "url",
+        "id": "bottom_button_link",
+        "label": "Bottom Button Link"
+      }, {
+        "type": "text",
+        "id": "bottom_text",
+        "label": "Bottom Text",
+        "default": "Thank you for visiting!"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom Banner",
+        "category": "Custom"
+      }
+    ]
+  }
+{% endschema %}

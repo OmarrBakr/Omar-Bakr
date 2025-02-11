@@ -1,0 +1,231 @@
+    @font-face {
+        font-family: "Jost";
+        src: url("/assets/Jost.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+  
+  .text-box {
+    font-family: "Jost", serif;
+    font-size: 5rem;
+    font-weight: 300;
+    line-height: 70px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: black;
+    padding-left: 35px;
+    padding-top: 100px;
+  }
+  @media(max-width:780px) {
+    .text-box {
+      text-align: center;
+      font-size: 3rem;
+      padding-left: 0;
+      padding-top: 1.9rem;
+    }
+  }
+  .grid-products {
+    display: flex;
+    padding: 20px;
+    flex-wrap: wrap;
+  }
+  .grid-product {
+    cursor: pointer;
+    flex: 33%;
+    padding: 15px;
+  }
+  @media(max-width:780px) {
+    .grid-product {
+      flex: 50%;
+      padding: 4px;
+    }
+  }
+  .grid-product img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+  }
+  .popup-content {
+    background: white;
+    padding: 20px;
+    width: 23%;
+    max-width: 500px;
+    box-shadow: 100px;
+    text-align: center;
+    position: relative;
+  }
+  @media(max-width:780px) {
+    .popup-content {
+      width: 80%;
+      height: 75%;
+    }
+  }
+  .popup-content img {
+    max-width: 100%;
+    height: auto;
+  }
+  .close-popup {
+    position: absolute;
+    top: -1rem;
+    right: 20px;
+    font-size: 4rem;
+    cursor: pointer;
+  }
+  .popup select {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+  }
+  .popup-top {
+    display: flex;
+    padding-bottom: 10px;
+    color: black;
+  }
+  .product-image {
+    padding-top: 30px;
+    flex: 40;
+  }
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .product-top-right {
+    padding-top: 20px;
+    flex: 60;
+  }
+  .product-title {
+    text-align: left;
+    padding-left: 10px;
+    font-weight: 1;
+    color: black;
+  }
+  .product-title h2 {
+    font-size: 1.8rem;
+  }
+  .product-price {
+    text-align: left;
+    padding-left: 10px;
+    font-weight: 500;
+    font-size: 19px;
+  }
+  .product-description {
+    text-align: left;
+    padding-left: 10px;
+    line-height: 20px;
+  }
+  .add-to-cart-button-container {
+    text-align: left;
+    padding: 40px 5px 5px;
+  }
+  @media(max-width:780px) {
+    .add-to-cart-button-container {
+      padding-bottom: 0;
+    }
+  }
+  .add-to-cart-button-container button {
+    height: 5.5rem;
+    width: 100%;
+    cursor: pointer;
+    background: linear-gradient(to right,black 50%,#FFF544 50%);
+    background-size: 200% 100%;
+    transition: background-position 0.5s ease;
+    color: white;
+    font-family: "Jost", serif;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 20.48px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    display: flex;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: block;
+    margin: 0;
+    border: 0;
+    padding: 10px 0;
+  }
+  @media(max-width:780px) {
+    .add-to-cart-button-container button {
+      font-size: 1.5rem;
+      height: 4.5rem;
+    }
+  }
+  .add-to-cart-button-container button:hover {
+    background-position: -100% 0;
+    color: black;
+  }
+  .product-color {
+    text-align: left;
+    padding-left: 5px;
+    color: black;
+  }
+  .product-size {
+    text-align: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: black;
+  }
+  #popupSize {
+    width: 100%;
+    border-radius: 0;
+    background-color: white;
+  }
+  #popupSize option {
+    text-align: center;
+  }
+  .color-button.selected {
+    background-color: black;
+    color: white;
+    background-position: left;
+  }
+  .color-button {
+    border-top: 0.1px solid black;
+    border-right: 0.1px solid black;
+    border-bottom: 0.1px solid black;
+    border-left: none;
+    cursor: pointer;
+    flex: 1;
+    padding: 17px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    background: white;
+    background: white;
+    background-image: linear-gradient(to right, black 50%, white 50%);
+    background-size: 200% 100%;
+    background-position: right;
+    transition: background-position 0.5s ease-in-out;
+
+
+  }
+  #popupColorButtons {
+    display: flex;
+    width: 100%;
+    padding-left: 5px;
+    padding-bottom: 10px;
+  }
+  .color-preview {
+    width: 6px;
+    height: 340%;
+    border: 0.5px solid #000;
+    padding: none;
+  }

@@ -1,0 +1,206 @@
+{{ 'grid-products.css' | asset_url | stylesheet_tag }}
+
+<div class="text-box">
+  {{ section.settings.bottom_text_box }}
+</div>
+<div class="grid-products">
+  {% for product in section.settings.products %}
+    <div
+      class="grid-product"
+      onclick="openPopup('{{ product.id }}')"
+      data-product='{"id":"{{ product.id }}", "title":"{{ product.title }}", "price":"{{ product.price | money }}", "description":"{{ product.description | escape }}", "image":"{{ product.featured_image | img_url: '533x' }}", "colors":"{{ product.options_by_name['Color'].values | join: ',' }}", "sizes":"{{ product.options_by_name['Size'].values | join: ',' }}"}'
+      data-variants='{{ product.variants | json | escape}}'>
+      {% if product.featured_image %}
+        <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}" />
+      {% endif %}
+    </div>
+  {% endfor %}
+
+</div>
+
+<div class="popup" id="productPopup">
+  <div class="popup-content">
+    <div class="popup-top">
+      <div class="product-image">
+        <img
+          id="popupImage"
+          src=""
+          alt="Product Image">
+
+      </div>
+      <div class="product-top-right">
+        <div class="product-title">
+          <h2 id="popupTitle"></h2>
+        </div>
+        <div class="product-price">
+          <p>
+            <span id="popupPrice"></span>
+          </p>
+        </div>
+        <div class="product-description">
+          <p id="popupDescription"></p>
+
+        </div>
+      </div>
+    </div>
+    <span class="close-popup" onclick="closePopup()">&times;</span>
+    <div class="product-color">
+      <label>Color</label>
+    </div>
+    <div id="popupColorButtons"></div>
+
+    <div class="product-size">
+      <label for="popupSize">Size</label>
+      <select id="popupSize">
+        <option value="default" selected>Choose your size</option>
+      </select>
+
+    </div>
+    <div class="add-to-cart-button-container">
+      <button onclick="addToCart()">ADD TO CART     →</button>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPopup(productId) {
+    let productData = document.querySelector(`[onclick="openPopup('${productId}')"]`).dataset.product;
+    let variantsData = document.querySelector(`[onclick="openPopup('${productId}')"]`).dataset.variants;
+
+    let product = JSON.parse(productData);
+    let variants = JSON.parse(variantsData);
+
+    document.getElementById("popupImage").src = product.image;
+    document.getElementById("popupTitle").textContent = product.title;
+    document.getElementById("popupDescription").innerHTML = product.description.replace(/<\/?p>/g, "");
+    document.getElementById("popupPrice").textContent = product.price;
+
+    let colorContainer = document.getElementById("popupColorButtons");
+    colorContainer.innerHTML = "";
+    if (product.colors) {
+      product.colors.split(",").forEach(color => {
+        let button = document.createElement("button");
+        button.classList.add("color-button");
+        button.onclick = () => selectColor(button);
+        let colorPreview = document.createElement("span");
+        colorPreview.classList.add("color-preview");
+        colorPreview.style.backgroundColor = color.toLowerCase();
+        button.appendChild(colorPreview);
+        button.appendChild(document.createTextNode(color));
+        colorContainer.appendChild(button);
+      });
+    }
+
+    let sizeSelect = document.getElementById("popupSize");
+    sizeSelect.innerHTML = "";
+    if (product.sizes) {
+      product.sizes.split(",").forEach(size => {
+        let option = document.createElement("option");
+        option.textContent = size;
+        sizeSelect.appendChild(option);
+      });
+    }
+
+    let popup = document.getElementById("productPopup");
+    popup.dataset.product = JSON.stringify(product);
+    popup.dataset.variants = JSON.stringify(variants);
+
+    document.getElementById("productPopup").style.display = "flex";
+  }
+
+  function selectColor(button) {
+    document.querySelectorAll(".color-button").forEach(btn => btn.classList.remove("selected"));
+    button.classList.add("selected");
+  }
+
+
+  function closePopup() {
+    document.getElementById("productPopup").style.display = "none";
+  }
+
+  async function addToCart() {
+    let popup = document.getElementById("productPopup");
+
+    let product = JSON.parse(popup.dataset.product);
+    let variants = JSON.parse(popup.dataset.variants);
+
+    let selectedColor = document.querySelector(".color-button.selected") ?. textContent ?. trim();
+    let selectedSize = document.getElementById("popupSize").value;
+
+    if (! selectedColor || selectedSize === "default") {
+      alert("Please select a color and size before adding to cart.");
+      return;
+    }
+
+    console.log(variants);
+    console.log(selectedColor, selectedSize);
+    let selectedVariant = variants.find(variant => variant.option1 === selectedSize && variant.option2 === selectedColor);
+
+    let formData = new FormData();
+    formData.append("id", selectedVariant.id);
+    formData.append("quantity", 1);
+
+    try {
+      let response = await fetch("/cart/add.js", {
+        method: "POST",
+        body: formData
+      });
+
+      let data = await response.json();
+      alert("Product added to cart!");
+
+      if (selectedColor === "Black" && selectedSize === "M") {
+        await sendGift();
+      }
+      closePopup();
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to add product to cart.");
+    }
+  }
+
+  async function sendGift() {
+    let formData2 = new FormData();
+    formData2.append("id", 44730128597177);
+    formData2.append("quantity", 1);
+
+    try {
+      let response = await fetch("/cart/add.js", {
+        method: "POST",
+        body: formData2
+      });
+
+      let data = await response.json();
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to add gift to cart.");
+    }
+  }
+</script>
+
+{% schema %}
+  {
+    "name": "Grid Products",
+    "settings": [
+      {
+        "type": "product_list",
+        "id": "products",
+        "label": "Select Products",
+        "limit": 6,
+        "info": "Select up to 6 products to display in the grid."
+      }, {
+        "type": "text",
+        "id": "bottom_text_box",
+        "label": "Bottom Text Box 1",
+        "default": "Text Box 1"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Grid Products",
+        "category": "Products"
+      }
+    ]
+  }
+{% endschema %}
